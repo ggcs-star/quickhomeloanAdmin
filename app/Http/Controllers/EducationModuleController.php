@@ -7,12 +7,16 @@ use Illuminate\Support\Str;
 
 class EducationModuleController extends Controller
 {
-    public function index()
-    {
-        $modules = EducationModule::orderBy('order')->get();
-        return view('educationModules.index', compact('modules'));
-    }
+   public function index()
+{
+    $modules = EducationModule::with(['contents' => function ($q) {
+            $q->orderBy('order');
+        }])
+        ->orderBy('order')
+        ->paginate(10); 
 
+    return view('educationModules.index', compact('modules'));
+}
     public function create()
     {
         return view('educationModules.create');
