@@ -64,7 +64,7 @@ public function show($id)
             'status' => (int) ($request->status ?? 1),
         ]);
 
-        return redirect()->route('educationContents.index')->with('success', 'Content Created');
+        return redirect()->route('contents.index')->with('success', 'Content Created');
     }
 
     public function edit($id)
