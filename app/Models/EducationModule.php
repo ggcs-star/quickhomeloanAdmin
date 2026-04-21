@@ -12,7 +12,9 @@ class EducationModule extends Model
         'slug',
         'description',
         'order',
-        'status'
+        'status',
+        'image',        
+        'color_code',   
     ];
 
     public function contents()

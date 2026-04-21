@@ -22,22 +22,33 @@ class EducationModuleController extends Controller
         return view('educationModules.create');
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required'
-        ]);
 
-        EducationModule::create([
-            'title' => $request->title,
-            'slug' => Str::slug($request->title),
-            'description' => $request->description,
-            'order' => (int) ($request->order ?? 0),
-            'status' => (int) ($request->status ?? 1),
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'title' => 'required',
+        'image' => 'nullable|image',
+        'color_code' => 'nullable|string'
+    ]);
 
-        return redirect()->route('modules.index')->with('success', 'Module Created');
+    
+    $imagePath = null;
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('education/modules', 'public');
     }
+
+    EducationModule::create([
+        'title' => $request->title,
+        'slug' => Str::slug($request->title),
+        'description' => $request->description,
+        'order' => (int) ($request->order ?? 0),
+        'status' => (int) ($request->status ?? 1),
+        'image' => $imagePath,                 
+        'color_code' => $request->color_code ?? '#6366F1', 
+    ]);
+
+    return redirect()->route('modules.index')->with('success', 'Module Created');
+}
 
     public function edit($id)
     {
@@ -45,24 +56,34 @@ class EducationModuleController extends Controller
         return view('educationModules.edit', compact('module'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'title' => 'required'
-        ]);
+   
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'title' => 'required',
+        'image' => 'nullable|image',
+        'color_code' => 'nullable|string'
+    ]);
 
-        $module = EducationModule::findOrFail($id);
+    $module = EducationModule::findOrFail($id);
 
-        $module->update([
-            'title' => $request->title,
-            'slug' => Str::slug($request->title),
-            'description' => $request->description,
-            'order' => (int) ($request->order ?? 0),
-            'status' => (int) ($request->status ?? 1),
-        ]);
-
-        return redirect()->route('modules.index')->with('success', 'Module Updated');
+   
+    if ($request->hasFile('image')) {
+        $module->image = $request->file('image')->store('education/modules', 'public');
     }
+
+    
+    $module->update([
+        'title' => $request->title,
+        'slug' => Str::slug($request->title),
+        'description' => $request->description,
+        'order' => (int) ($request->order ?? 0),
+        'status' => (int) ($request->status ?? 1),
+        'color_code' => $request->color_code ?? $module->color_code,
+    ]);
+
+    return redirect()->route('modules.index')->with('success', 'Module Updated');
+}
 
     public function destroy($id)
     {
