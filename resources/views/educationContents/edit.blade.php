@@ -184,7 +184,44 @@
                     <textarea name="description" rows="4"
                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 resize-none">{{ $content->description }}</textarea>
                 </div>
+<div class="space-y-3">
+    <label class="text-sm font-medium text-gray-700">FAQs</label>
 
+    <div id="faq-wrapper">
+
+        @if(!empty($content->faqs))
+            @foreach($content->faqs as $index => $faq)
+                <div class="faq-item grid grid-cols-1 sm:grid-cols-2 gap-3 mb-2">
+                    
+                    <input type="text"
+                        name="faqs[{{ $index }}][title]"
+                        value="{{ $faq['title'] ?? '' }}"
+                        placeholder="FAQ Title"
+                        class="w-full px-3 py-2 border rounded">
+
+                    <div class="flex gap-2">
+                        <input type="text"
+                            name="faqs[{{ $index }}][description]"
+                            value="{{ $faq['description'] ?? '' }}"
+                            placeholder="FAQ Description"
+                            class="w-full px-3 py-2 border rounded">
+
+                        <button type="button"
+                            onclick="this.parentElement.parentElement.remove()"
+                            class="bg-red-500 text-white px-2 rounded">X</button>
+                    </div>
+
+                </div>
+            @endforeach
+        @endif
+
+    </div>
+
+    <button type="button" onclick="addFaq()"
+        class="px-3 py-1 bg-indigo-500 text-white rounded text-sm">
+        + Add FAQ
+    </button>
+</div>
                 <!-- STATUS -->
                 <div class="space-y-2">
                     <label class="flex items-center gap-2 text-sm font-medium text-gray-700">
@@ -222,5 +259,30 @@
     </div>
 
 </div>
+<script>
+let faqIndex = {{ isset($content->faqs) ? count($content->faqs) : 0 }};
 
+function addFaq() {
+    const wrapper = document.getElementById('faq-wrapper');
+
+    const div = document.createElement('div');
+    div.classList.add('faq-item', 'grid', 'grid-cols-1', 'sm:grid-cols-2', 'gap-3', 'mb-2');
+
+    div.innerHTML = `
+        <input type="text" name="faqs[${faqIndex}][title]" placeholder="FAQ Title"
+            class="w-full px-3 py-2 border rounded">
+
+        <div class="flex gap-2">
+            <input type="text" name="faqs[${faqIndex}][description]" placeholder="FAQ Description"
+                class="w-full px-3 py-2 border rounded">
+
+            <button type="button" onclick="this.parentElement.parentElement.remove()"
+                class="bg-red-500 text-white px-2 rounded">X</button>
+        </div>
+    `;
+
+    wrapper.appendChild(div);
+    faqIndex++;
+}
+</script>
 @endsection

@@ -9,21 +9,21 @@ use Illuminate\Support\Str;
 
 class EducationContentController extends Controller
 {
-public function index()
-{
-    $contents = EducationContent::with('module')
-        ->orderBy('order')
-        ->paginate(10); 
+    public function index()
+    {
+        $contents = EducationContent::with('module')
+            ->orderBy('order')
+            ->paginate(10);
 
-    return view('educationContents.index', compact('contents'));
-}
+        return view('educationContents.index', compact('contents'));
+    }
 
-public function show($id)
-{
-    $content = EducationContent::with('module')->findOrFail($id);
+    public function show($id)
+    {
+        $content = EducationContent::with('module')->findOrFail($id);
 
-    return view('educationContents.show', compact('content'));
-}
+        return view('educationContents.show', compact('content'));
+    }
 
     public function create()
     {
@@ -50,7 +50,9 @@ public function show($id)
         if ($request->hasFile('thumbnail')) {
             $thumbnailPath = $request->file('thumbnail')->store('education/thumbnails', 'public');
         }
-
+        $faqs = array_values(array_filter($request->faqs ?? [], function ($faq) {
+            return !empty($faq['title']) || !empty($faq['description']);
+        }));
         EducationContent::create([
             'module_id' => $request->module_id,
             'title' => $request->title,
@@ -62,6 +64,7 @@ public function show($id)
             'description' => $request->description,
             'order' => (int) ($request->order ?? 0),
             'status' => (int) ($request->status ?? 1),
+            'faqs' => $faqs,
         ]);
 
         return redirect()->route('contents.index')->with('success', 'Content Created');
@@ -96,7 +99,9 @@ public function show($id)
             $thumbnailPath = $request->file('thumbnail')->store('education/thumbnails', 'public');
             $content->thumbnail = $thumbnailPath;
         }
-
+        $faqs = array_values(array_filter($request->faqs ?? [], function ($faq) {
+            return !empty($faq['title']) || !empty($faq['description']);
+        }));
         $content->update([
             'module_id' => $request->module_id,
             'title' => $request->title,
@@ -106,6 +111,7 @@ public function show($id)
             'description' => $request->description,
             'order' => (int) ($request->order ?? 0),
             'status' => (int) ($request->status ?? 1),
+            'faqs' => $faqs,
         ]);
 
         return redirect()->route('contents.index')->with('success', 'Content Updated');

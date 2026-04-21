@@ -17,7 +17,8 @@ class EducationContent extends Model
         'duration',
         'description',
         'order',
-        'status'
+        'status',
+        'faqs',
     ];
 
     public function module()
