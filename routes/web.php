@@ -14,6 +14,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\DsaPartnerController;
 use App\Http\Controllers\EducationModuleController;
 use App\Http\Controllers\EducationContentController;
+use App\Http\Controllers\CalculatorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -146,6 +147,15 @@ Route::prefix('education-contents')->group(function () {
     Route::get('/edit/{id}', [EducationContentController::class, 'edit'])->name('contents.edit');
     Route::post('/update/{id}', [EducationContentController::class, 'update'])->name('contents.update');
     Route::get('/delete/{id}', [EducationContentController::class, 'destroy'])->name('contents.delete');
+});
+
+
+
+Route::prefix('calculators')->group(function () {
+    Route::get('/', [CalculatorController::class, 'index'])->name('calculators.index');
+    Route::post('/store', [CalculatorController::class, 'store'])->name('calculators.store');
+    Route::post('/toggle/{id}', [CalculatorController::class, 'toggle'])->name('calculators.toggle');
+    Route::post('/calculators/access/{id}', [CalculatorController::class, 'updateAccess'])->name('calculators.updateAccess');
 });
 });
 
