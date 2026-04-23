@@ -21,4 +21,14 @@ class Reel extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+ 
+    public function likes()
+    {
+        return $this->hasMany(ReelLike::class, 'reel_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(ReelComment::class, 'reel_id');
+    }
 }

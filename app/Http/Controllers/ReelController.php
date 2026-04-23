@@ -10,7 +10,22 @@ class ReelController extends Controller
 {
     public function index()
     {
-        $reels = Reel::orderBy('order')->get();
+        $reels = Reel::orderBy('order')->paginate(10);
+
+        $reels->getCollection()->transform(function ($reel) {
+
+            $reel->likes_count = $reel->likes()->count();
+            $reel->comments_count = $reel->comments()->count();
+
+
+            $reel->latest_comments = $reel->comments()
+                ->latest()
+                ->limit(20)
+                ->get();
+
+            return $reel;
+        });
+
         return view('reels.index', compact('reels'));
     }
 
