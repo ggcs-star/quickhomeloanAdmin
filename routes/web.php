@@ -15,7 +15,7 @@ use App\Http\Controllers\DsaPartnerController;
 use App\Http\Controllers\EducationModuleController;
 use App\Http\Controllers\EducationContentController;
 use App\Http\Controllers\CalculatorController;
-
+use App\Http\Controllers\ReelController;
 /*
 |--------------------------------------------------------------------------
 | AUTH ROUTES
@@ -157,6 +157,19 @@ Route::prefix('calculators')->group(function () {
     Route::post('/toggle/{id}', [CalculatorController::class, 'toggle'])->name('calculators.toggle');
     Route::post('/calculators/access/{id}', [CalculatorController::class, 'updateAccess'])->name('calculators.updateAccess');
 });
+
+
+
+
+Route::prefix('reels')->group(function () {
+    Route::get('/', [ReelController::class, 'index'])->name('reels.index');
+    Route::get('/create', [ReelController::class, 'create'])->name('reels.create');
+    Route::post('/store', [ReelController::class, 'store'])->name('reels.store');
+    Route::get('/edit/{id}', [ReelController::class, 'edit'])->name('reels.edit');
+    Route::post('/update/{id}', [ReelController::class, 'update'])->name('reels.update');
+    Route::post('/delete/{id}', [ReelController::class, 'delete'])->name('reels.delete');
+});
+
 });
 
 

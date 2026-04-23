@@ -61,6 +61,7 @@
                             ]
                         ],
                         ['Calculators','calculators.index','Calculator'],
+                        ['Reels', 'reels.index', 'video'],
                         ['Leads', 'leads', 'users'],
 
                         ['Projects', 'projects', 'building'],
