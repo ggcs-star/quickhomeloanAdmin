@@ -56,6 +56,7 @@
                             'Education Center',
                             'icon' => 'home',
                             'children' => [
+                                ['Courses', 'courses.index'],
                                 ['Modules', 'modules.index'],
                                 ['Contents', 'contents.index'],
                             ]

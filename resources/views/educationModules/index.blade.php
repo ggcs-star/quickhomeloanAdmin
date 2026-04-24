@@ -114,7 +114,9 @@
                                     Order #{{ $module->order ?: 'N/A' }}
                                 </span>
                             </div>
-                            
+                            <p class="text-xs text-blue-500">
+    Course: {{ optional($module->course)->title }}
+</p>
                             <!-- MODULE META -->
                             <div class="flex items-center gap-4 mt-1">
                                 <span class="text-xs text-gray-500 flex items-center gap-1">

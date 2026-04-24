@@ -8,6 +8,7 @@ class EducationModule extends Model
     protected $collection = 'education_modules';
 
     protected $fillable = [
+        'course_id', 
         'title',
         'slug',
         'description',
@@ -21,4 +22,9 @@ class EducationModule extends Model
     {
         return $this->hasMany(EducationContent::class, 'module_id');
     }
+
+    public function course()
+{
+    return $this->belongsTo(Course::class, 'course_id');
+}
 }

@@ -18,6 +18,7 @@ class CalculatorController extends Controller
             'name' => 'required',
             'slug' => 'required|unique:calculators,slug',
             'category' => 'required',
+            'user_type' => 'required|in:first_time,existing,all',
         ]);
 
         Calculator::create([
@@ -26,6 +27,7 @@ class CalculatorController extends Controller
             'category' => $request->category,
             'description' => $request->description,
             'is_active' => true,
+            'user_type' => $request->user_type,
         ]);
 
         return back()->with('success', 'Calculator Added');
@@ -42,12 +44,22 @@ class CalculatorController extends Controller
     }
 
     public function updateAccess(Request $request, $id)
-{
-    $calc = Calculator::findOrFail($id);
+    {
+        $calc = Calculator::findOrFail($id);
 
-    $calc->access_type = $request->access_type;
-    $calc->save();
+        $calc->access_type = $request->access_type;
+        $calc->save();
 
-    return back()->with('success', 'Access updated');
-}
+        return back()->with('success', 'Access updated');
+    }
+
+    public function updateUserType(Request $request, $id)
+    {
+        $calc = Calculator::findOrFail($id);
+
+        $calc->user_type = $request->user_type;
+        $calc->save();
+
+        return back()->with('success', 'User type updated');
+    }
 }

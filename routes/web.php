@@ -16,6 +16,7 @@ use App\Http\Controllers\EducationModuleController;
 use App\Http\Controllers\EducationContentController;
 use App\Http\Controllers\CalculatorController;
 use App\Http\Controllers\ReelController;
+use App\Http\Controllers\CourseController;
 /*
 |--------------------------------------------------------------------------
 | AUTH ROUTES
@@ -128,6 +129,18 @@ Route::post('/campaigns', [CampaignController::class, 'store'])
     Route::post('/settings/security', [SettingsController::class, 'changePassword']);
     Route::post('/settings/organization', [SettingsController::class, 'saveOrganization']);
 
+Route::prefix('courses')->group(function () {
+    Route::get('/', [CourseController::class, 'index'])->name('courses.index');
+    Route::get('/create', [CourseController::class, 'create'])->name('courses.create');
+    Route::post('/store', [CourseController::class, 'store'])->name('courses.store');
+    Route::get('/edit/{id}', [CourseController::class, 'edit'])->name('courses.edit');
+    Route::put('/update/{id}', [CourseController::class, 'update'])->name('courses.update');
+    Route::post('/delete/{id}', [CourseController::class, 'destroy'])->name('courses.delete');
+    Route::post('/toggle/{id}', [CourseController::class, 'toggle'])->name('courses.toggle');
+});
+
+
+
 
 Route::prefix('education-modules')->group(function () {
     Route::get('/', [EducationModuleController::class, 'index'])->name('modules.index');
@@ -156,6 +169,7 @@ Route::prefix('calculators')->group(function () {
     Route::post('/store', [CalculatorController::class, 'store'])->name('calculators.store');
     Route::post('/toggle/{id}', [CalculatorController::class, 'toggle'])->name('calculators.toggle');
     Route::post('/calculators/access/{id}', [CalculatorController::class, 'updateAccess'])->name('calculators.updateAccess');
+    Route::post('/calculators/user-type/{id}', [CalculatorController::class, 'updateUserType'])->name('calculators.updateUserType');
 });
 
 

@@ -16,6 +16,7 @@ class Calculator extends Model
         'description',
         'is_active',
         'access_type', 
+        'user_type',
     ];
 
     protected $casts = [
