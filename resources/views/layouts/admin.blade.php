@@ -62,6 +62,7 @@
                             ]
                         ],
                         ['Calculators','calculators.index','Calculator'],
+                        ['Banners', 'banners.index', 'image'],
                         ['Reels', 'reels.index', 'video'],
                         ['Leads', 'leads', 'chart-line'],
                         ['Users', 'users.index', 'users'],
