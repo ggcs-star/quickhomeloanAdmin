@@ -12,25 +12,37 @@ class CalculatorSeeder extends Seeder
         $calculators = [
             [
                 'name' => 'EMI Calculator',
-                'slug' => 'emi_calculator',
+                'slug' => 'emi_calculatora',
                 'category' => 'Loan',
                 'description' => 'Calculate EMI based on loan amount, interest rate, and tenure.',
                 'access_type' => 'free',
                 'is_active' => true,
+                'user_type' => 'free',
             ],
             [
                 'name' => 'Housing EMI Calculator',
-                'slug' => 'housing_emi_calculator',
+                'slug' => 'housing_emi_calculatora',
                 'category' => 'Housing',
                 'description' => 'Calculate EMI for housing loans with tenure and interest.',
                 'access_type' => 'premium',
                 'is_active' => true,
+                'user_type' => 'existing',
+            ],
+
+            [
+                'name' => 'Housing EMI Calculator',
+                'slug' => 'housing_emis_calculatora',
+                'category' => 'Housing',
+                'description' => 'Calculate EMI for housing loans with tenure and interest.',
+                'access_type' => 'premium',
+                'is_active' => true,
+                'user_type' => 'first_time',
             ],
         ];
 
         foreach ($calculators as $calc) {
             Calculator::updateOrCreate(
-                ['slug' => $calc['slug']], 
+                ['slug' => $calc['slug']],
                 $calc
             );
         }

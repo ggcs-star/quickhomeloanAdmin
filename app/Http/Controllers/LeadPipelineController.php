@@ -265,30 +265,29 @@ if ($loan->user_id && $loan->user_id !== auth()->id()) {
 
 public function search(Request $request)
 {
-    $q = strtolower(trim($request->q));
+    $q = $request->q;
 
-    return Loan::where('step_completed', '>=', 3)
-        ->get()
-        ->filter(function ($loan) use ($q) {
+    return Loan::with('user')
+        ->where('step_completed', '>=', 3)
+        ->where(function ($query) use ($q) {
 
-            $name   = strtolower($loan->data['full_name'] ?? '');
-            $email  = strtolower($loan->data['email'] ?? '');
-            $mobile = strtolower($loan->data['mobile'] ?? '');
+            $query->where('data.full_name', 'like', "%$q%")
+                ->orWhereHas('user', function ($q2) use ($q) {
+                    $q2->where('email', 'like', "%$q%")
+                       ->orWhere('mobile_number', 'like', "%$q%");
+                });
 
-            return str_contains($name, $q)
-                || str_contains($email, $q)
-                || str_contains($mobile, $q);
         })
-        ->take(10)
+        ->limit(10)
+        ->get()
         ->map(function ($loan) {
             return [
                 'id'     => (string) $loan->_id,
                 'name'   => $loan->data['full_name'] ?? 'Unknown',
-                'mobile' => $loan->data['mobile'] ?? '',
-                'email'  => $loan->data['email'] ?? '',
+                'mobile' => $loan->user->mobile_number ?? '',
+                'email'  => $loan->user->email ?? '',
             ];
-        })
-        ->values();
+        });
 }
 
 public function list()

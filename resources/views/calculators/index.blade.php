@@ -22,8 +22,7 @@
         <div class="mb-6 space-y-4">
             <!-- Search & Dropdown Filters -->
             <div class="flex flex-col sm:flex-row gap-4">
-                <input type="text" id="searchInput" placeholder="Search calculators..." 
-                    class="flex-1 p-2 border rounded-lg"
+                <input type="text" id="searchInput" placeholder="Search calculators..." class="flex-1 p-2 border rounded-lg"
                     onkeyup="filterCalculators()">
 
                 <select id="statusFilter" class="p-2 border rounded-lg" onchange="filterCalculators()">
@@ -32,34 +31,31 @@
                     <option value="inactive">Inactive</option>
                 </select>
 
-                <select id="accessFilter" class="p-2 border rounded-lg" onchange="filterCalculators()">
-                    <option value="all">All Access</option>
-                    <option value="free">Free</option>
-                    <option value="premium">Premium</option>
-                </select>
+             
             </div>
 
-            <!-- User Type Filter Buttons -->
+            <!-- User Type Filter Buttons (Multiple Selection) -->
             <div class="flex flex-wrap gap-2">
                 <span class="text-sm font-medium text-gray-700 self-center mr-2">User Type:</span>
-                <button onclick="setUserTypeFilter('all')" 
-                    id="filter-all"
-                    class="user-type-btn px-4 py-1.5 text-sm rounded-full border-2 transition
-                           bg-blue-600 text-white border-blue-600 hover:bg-blue-700">
-                    All Users
+                <button onclick="toggleUserTypeFilter('all')" id="filter-all" class="user-type-btn px-4 py-1.5 text-sm rounded-full border-2 transition
+                   bg-blue-600 text-white border-blue-600 hover:bg-blue-700">
+                    All
                 </button>
-                <button onclick="setUserTypeFilter('first_time')" 
-                    id="filter-first_time"
-                    class="user-type-btn px-4 py-1.5 text-sm rounded-full border-2 transition
-                           bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:text-blue-600">
+                <button onclick="toggleUserTypeFilter('free')" id="filter-free" class="user-type-btn px-4 py-1.5 text-sm rounded-full border-2 transition
+                   bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:text-blue-600">
+                    Free
+                </button>
+                <button onclick="toggleUserTypeFilter('first_time')" id="filter-first_time" class="user-type-btn px-4 py-1.5 text-sm rounded-full border-2 transition
+                   bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:text-blue-600">
                     First Time
                 </button>
-                <button onclick="setUserTypeFilter('existing')" 
-                    id="filter-existing"
-                    class="user-type-btn px-4 py-1.5 text-sm rounded-full border-2 transition
-                           bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:text-blue-600">
+                <button onclick="toggleUserTypeFilter('existing')" id="filter-existing" class="user-type-btn px-4 py-1.5 text-sm rounded-full border-2 transition
+                   bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:text-blue-600">
                     Existing
                 </button>
+                
+                <!-- Active Filters Display -->
+                <span id="activeFilters" class="text-sm text-blue-600 font-medium self-center ml-4"></span>
             </div>
         </div>
 
@@ -72,36 +68,24 @@
                 </svg>
                 <h3 class="mt-2 text-sm font-semibold text-gray-900">No calculators</h3>
                 <p class="mt-1 text-sm text-gray-500">Get started by creating a new calculator.</p>
-                <div class="mt-6">
-                    <a href="{{ route('calculators.create') }}"
-                        class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                        New Calculator
-                    </a>
-                </div>
+
             </div>
         @else
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="calculatorsGrid">
                 @foreach($calculators as $calc)
                     <div class="calculator-card bg-white shadow-md rounded-xl p-5 border hover:shadow-lg transition"
-                        data-name="{{ strtolower($calc->name) }}" 
-                        data-status="{{ $calc->is_active ? 'active' : 'inactive' }}"
-                        data-access="{{ $calc->access_type }}"
-                        data-user-type="{{ $calc->user_type }}">
+                        data-name="{{ strtolower($calc->name) }}" data-status="{{ $calc->is_active ? 'active' : 'inactive' }}"
+                        data-access="{{ $calc->access_type }}" data-user-type="{{ $calc->user_type }}">
 
                         <!-- Badge -->
                         <div class="flex items-center justify-between mb-3">
-                            <span class="px-2 py-1 text-xs font-semibold rounded-full
-                                       {{ $calc->access_type === 'premium' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800' }}">
-                                {{ ucfirst($calc->access_type) }}
-                            </span>
-                            <span class="px-2 py-1 text-xs font-semibold rounded-full
-                                       {{ $calc->user_type === 'first_time' ? 'bg-purple-100 text-purple-800' : 
-                                          ($calc->user_type === 'existing' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800') }}">
-                                {{ $calc->user_type === 'first_time' ? 'First Time' : 
-                                   ($calc->user_type === 'existing' ? 'Existing' : 'All Users') }}
+                            
+                            <span
+                                class="px-2 py-1 text-xs font-semibold rounded-full
+                                                   {{ $calc->user_type === 'first_time' ? 'bg-purple-100 text-purple-800' :
+                        ($calc->user_type === 'existing' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800') }}">
+                                {{ $calc->user_type === 'first_time' ? 'First Time' :
+                        ($calc->user_type === 'existing' ? 'Existing' : 'All Users') }}
                             </span>
                         </div>
 
@@ -123,61 +107,19 @@
                         <!-- Action Buttons (Status Toggle + User Type Update) -->
                         <div class="space-y-3 pt-3 border-t">
                             <!-- Status Toggle -->
-                            <form method="POST" action="{{ route('calculators.toggle', $calc->_id) }}" class="flex items-center justify-between">
+                            <form method="POST" action="{{ route('calculators.toggle', $calc->_id) }}"
+                                class="flex items-center justify-between">
                                 @csrf
                                 @method('POST')
                                 <span class="text-sm text-gray-600">Status</span>
                                 <button type="submit"
                                     onclick="return confirm('Are you sure you want to {{ $calc->is_active ? 'deactivate' : 'activate' }} this calculator?')"
                                     class="relative inline-flex items-center h-6 rounded-full w-11 transition
-                                           {{ $calc->is_active ? 'bg-green-500' : 'bg-gray-300' }}">
+                                                       {{ $calc->is_active ? 'bg-green-500' : 'bg-gray-300' }}">
                                     <span class="inline-block w-4 h-4 transform bg-white rounded-full transition
-                                               {{ $calc->is_active ? 'translate-x-6' : 'translate-x-1' }}">
+                                                           {{ $calc->is_active ? 'translate-x-6' : 'translate-x-1' }}">
                                     </span>
                                 </button>
-                            </form>
-
-                            <!-- User Type Quick Update -->
-                            <form method="POST" action="{{ route('calculators.updateUserType', $calc->_id) }}">
-                                @csrf
-                                @method('POST')
-                                <label class="block text-xs text-gray-500 mb-1.5">User Type</label>
-                                <div class="flex gap-1">
-                                    <button type="submit" name="user_type" value="all"
-                                        class="flex-1 px-2 py-1 text-xs rounded border transition
-                                               {{ $calc->user_type == 'all' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-600 border-gray-300 hover:border-blue-400' }}">
-                                        All
-                                    </button>
-                                    <button type="submit" name="user_type" value="first_time"
-                                        class="flex-1 px-2 py-1 text-xs rounded border transition
-                                               {{ $calc->user_type == 'first_time' ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-gray-600 border-gray-300 hover:border-purple-400' }}">
-                                        First
-                                    </button>
-                                    <button type="submit" name="user_type" value="existing"
-                                        class="flex-1 px-2 py-1 text-xs rounded border transition
-                                               {{ $calc->user_type == 'existing' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-600 border-gray-300 hover:border-blue-400' }}">
-                                        Existing
-                                    </button>
-                                </div>
-                            </form>
-
-                            <!-- Access Type Quick Update -->
-                            <form method="POST" action="{{ route('calculators.updateAccess', $calc->_id) }}">
-                                @csrf
-                                @method('POST')
-                                <label class="block text-xs text-gray-500 mb-1.5">Access Type</label>
-                                <div class="flex gap-1">
-                                    <button type="submit" name="access_type" value="free"
-                                        class="flex-1 px-2 py-1 text-xs rounded border transition
-                                               {{ $calc->access_type == 'free' ? 'bg-green-600 text-white border-green-600' : 'bg-white text-gray-600 border-gray-300 hover:border-green-400' }}">
-                                        Free
-                                    </button>
-                                    <button type="submit" name="access_type" value="premium"
-                                        class="flex-1 px-2 py-1 text-xs rounded border transition
-                                               {{ $calc->access_type == 'premium' ? 'bg-yellow-600 text-white border-yellow-600' : 'bg-white text-gray-600 border-gray-300 hover:border-yellow-400' }}">
-                                        Premium
-                                    </button>
-                                </div>
                             </form>
                         </div>
                     </div>
@@ -194,22 +136,71 @@
     </div>
 
     <script>
-        let currentUserTypeFilter = 'all';
+        // Store selected filters (multiple selection)
+        let selectedUserTypes = new Set(['all']);
 
-        function setUserTypeFilter(userType) {
-            currentUserTypeFilter = userType;
+        function toggleUserTypeFilter(userType) {
+            // If "All" is clicked, reset to only "all"
+            if (userType === 'all') {
+                selectedUserTypes.clear();
+                selectedUserTypes.add('all');
+            } else {
+                // Remove "all" if it was previously selected
+                selectedUserTypes.delete('all');
+                
+                // Toggle the clicked filter
+                if (selectedUserTypes.has(userType)) {
+                    selectedUserTypes.delete(userType);
+                } else {
+                    selectedUserTypes.add(userType);
+                }
+                
+                // If no filters selected, revert to "all"
+                if (selectedUserTypes.size === 0) {
+                    selectedUserTypes.add('all');
+                }
+            }
             
-            // Update button styles
-            document.querySelectorAll('.user-type-btn').forEach(btn => {
-                btn.classList.remove('bg-blue-600', 'text-white', 'border-blue-600');
-                btn.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
-            });
-            
-            const activeBtn = document.getElementById('filter-' + userType);
-            activeBtn.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
-            activeBtn.classList.add('bg-blue-600', 'text-white', 'border-blue-600');
-            
+            updateButtonStyles();
             filterCalculators();
+        }
+
+        function updateButtonStyles() {
+            const allButtons = {
+                'all': document.getElementById('filter-all'),
+                'free': document.getElementById('filter-free'),
+                'first_time': document.getElementById('filter-first_time'),
+                'existing': document.getElementById('filter-existing')
+            };
+
+            // Reset all buttons to default style
+            Object.values(allButtons).forEach(btn => {
+                if (btn) {
+                    btn.classList.remove('bg-blue-600', 'text-white', 'border-blue-600');
+                    btn.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
+                }
+            });
+
+            // Highlight selected buttons
+            selectedUserTypes.forEach(type => {
+                if (allButtons[type]) {
+                    allButtons[type].classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
+                    allButtons[type].classList.add('bg-blue-600', 'text-white', 'border-blue-600');
+                }
+            });
+
+            // Update active filters display
+            const activeFiltersSpan = document.getElementById('activeFilters');
+            if (selectedUserTypes.has('all')) {
+                activeFiltersSpan.textContent = '';
+            } else {
+                const filterNames = Array.from(selectedUserTypes).map(type => {
+                    return type === 'free' ? 'Free' : 
+                           type === 'first_time' ? 'First Time' : 
+                           type === 'existing' ? 'Existing' : type;
+                });
+                activeFiltersSpan.textContent = `Showing: ${filterNames.join(' + ')}`;
+            }
         }
 
         function filterCalculators() {
@@ -226,7 +217,12 @@
                 const matchesSearch = name.includes(searchTerm);
                 const matchesStatus = statusFilter === 'all' || status === statusFilter;
                 const matchesAccess = accessFilter === 'all' || access === accessFilter;
-                const matchesUserType = currentUserTypeFilter === 'all' || userType === currentUserTypeFilter;
+                
+                // Check if user type matches any of the selected filters
+                const matchesUserType = selectedUserTypes.has('all') || 
+                                       (userType === 'free' && selectedUserTypes.has('free')) ||
+                                       (userType === 'first_time' && selectedUserTypes.has('first_time')) ||
+                                       (userType === 'existing' && selectedUserTypes.has('existing'));
 
                 card.style.display = matchesSearch && matchesStatus && matchesAccess && matchesUserType ? '' : 'none';
             });

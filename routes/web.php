@@ -17,6 +17,7 @@ use App\Http\Controllers\EducationContentController;
 use App\Http\Controllers\CalculatorController;
 use App\Http\Controllers\ReelController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | AUTH ROUTES
@@ -111,7 +112,7 @@ Route::post('{id}/update', [LendersController::class, 'update'])
 
 
     // LEAD AUTOFILL SEARCH
-    Route::get('/api/leads/search', [LeadPipelineController::class, 'search']);
+    Route::get('/leads/search', [LeadPipelineController::class, 'search']);
 
     /* Sidebar Pages */
 /* Sidebar Pages */
@@ -159,7 +160,7 @@ Route::prefix('education-contents')->group(function () {
     Route::post('/store', [EducationContentController::class, 'store'])->name('contents.store');
     Route::get('/edit/{id}', [EducationContentController::class, 'edit'])->name('contents.edit');
     Route::post('/update/{id}', [EducationContentController::class, 'update'])->name('contents.update');
-    Route::get('/delete/{id}', [EducationContentController::class, 'destroy'])->name('contents.delete');
+    Route::post('/delete/{id}', [EducationContentController::class, 'destroy'])->name('contents.delete');
 });
 
 
@@ -184,6 +185,8 @@ Route::prefix('reels')->group(function () {
     Route::post('/delete/{id}', [ReelController::class, 'delete'])->name('reels.delete');
 });
 
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::post('/users/toggle/{id}', [UserController::class, 'toggleStatus'])->name('users.toggle');
 });
 
 
