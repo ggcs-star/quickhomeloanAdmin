@@ -19,6 +19,7 @@ use App\Http\Controllers\ReelController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\CalculatorMediaController;
 /*
 |--------------------------------------------------------------------------
 | AUTH ROUTES
@@ -205,6 +206,15 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
+
+Route::prefix('calculator-media')->group(function () {
+    Route::get('/', [CalculatorMediaController::class, 'index'])->name('calculator-media.index');
+    Route::get('/create', [CalculatorMediaController::class, 'create'])->name('calculator-media.create');
+    Route::post('/store', [CalculatorMediaController::class, 'store'])->name('calculator-media.store');
+    Route::get('/edit/{id}', [CalculatorMediaController::class, 'edit'])->name('calculator-media.edit');
+    Route::put('/update/{id}', [CalculatorMediaController::class, 'update'])->name('calculator-media.update');
+    Route::delete('/delete/{id}', [CalculatorMediaController::class, 'destroy'])->name('calculator-media.delete');
+});
 /*
 |--------------------------------------------------------------------------
 | FALLBACK

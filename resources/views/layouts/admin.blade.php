@@ -61,6 +61,15 @@
                                 ['Contents', 'contents.index'],
                             ]
                         ],
+                        [
+                            'Calculator',
+                            'icon' => 'Calculator',
+                            'children' => [
+                                ['calculators', 'calculators.index'],
+                                ['Media', 'calculator-media.index'],
+                               
+                            ]
+                        ],
                         ['Calculators','calculators.index','Calculator'],
                         ['Banners', 'banners.index', 'image'],
                         ['Reels', 'reels.index', 'video'],

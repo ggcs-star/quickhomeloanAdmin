@@ -16,4 +16,7 @@ class Banner extends Model
         'order',
         'status',
     ];
+
+
+  
 }

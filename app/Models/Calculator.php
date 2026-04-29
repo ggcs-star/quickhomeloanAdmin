@@ -22,4 +22,9 @@ class Calculator extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    public function media()
+{
+    return $this->hasMany(CalculatorMedia::class, 'calculator_id');
+}
 }

@@ -31,29 +31,33 @@
                     <option value="inactive">Inactive</option>
                 </select>
 
-             
+                <select id="accessFilter" class="p-2 border rounded-lg" onchange="filterCalculators()">
+                    <option value="all">All Access Types</option>
+                    <option value="free">Free</option>
+                    <option value="premium">Premium</option>
+                </select>
             </div>
 
             <!-- User Type Filter Buttons (Multiple Selection) -->
             <div class="flex flex-wrap gap-2">
                 <span class="text-sm font-medium text-gray-700 self-center mr-2">User Type:</span>
                 <button onclick="toggleUserTypeFilter('all')" id="filter-all" class="user-type-btn px-4 py-1.5 text-sm rounded-full border-2 transition
-                   bg-blue-600 text-white border-blue-600 hover:bg-blue-700">
+                       bg-blue-600 text-white border-blue-600 hover:bg-blue-700">
                     All
                 </button>
                 <button onclick="toggleUserTypeFilter('free')" id="filter-free" class="user-type-btn px-4 py-1.5 text-sm rounded-full border-2 transition
-                   bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:text-blue-600">
+                       bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:text-blue-600">
                     Free
                 </button>
                 <button onclick="toggleUserTypeFilter('first_time')" id="filter-first_time" class="user-type-btn px-4 py-1.5 text-sm rounded-full border-2 transition
-                   bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:text-blue-600">
+                       bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:text-blue-600">
                     First Time
                 </button>
                 <button onclick="toggleUserTypeFilter('existing')" id="filter-existing" class="user-type-btn px-4 py-1.5 text-sm rounded-full border-2 transition
-                   bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:text-blue-600">
+                       bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:text-blue-600">
                     Existing
                 </button>
-                
+
                 <!-- Active Filters Display -->
                 <span id="activeFilters" class="text-sm text-blue-600 font-medium self-center ml-4"></span>
             </div>
@@ -79,10 +83,10 @@
 
                         <!-- Badge -->
                         <div class="flex items-center justify-between mb-3">
-                            
+
                             <span
                                 class="px-2 py-1 text-xs font-semibold rounded-full
-                                                   {{ $calc->user_type === 'first_time' ? 'bg-purple-100 text-purple-800' :
+                                                               {{ $calc->user_type === 'first_time' ? 'bg-purple-100 text-purple-800' :
                         ($calc->user_type === 'existing' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800') }}">
                                 {{ $calc->user_type === 'first_time' ? 'First Time' :
                         ($calc->user_type === 'existing' ? 'Existing' : 'All Users') }}
@@ -115,9 +119,9 @@
                                 <button type="submit"
                                     onclick="return confirm('Are you sure you want to {{ $calc->is_active ? 'deactivate' : 'activate' }} this calculator?')"
                                     class="relative inline-flex items-center h-6 rounded-full w-11 transition
-                                                       {{ $calc->is_active ? 'bg-green-500' : 'bg-gray-300' }}">
+                                                                   {{ $calc->is_active ? 'bg-green-500' : 'bg-gray-300' }}">
                                     <span class="inline-block w-4 h-4 transform bg-white rounded-full transition
-                                                           {{ $calc->is_active ? 'translate-x-6' : 'translate-x-1' }}">
+                                                                       {{ $calc->is_active ? 'translate-x-6' : 'translate-x-1' }}">
                                     </span>
                                 </button>
                             </form>
@@ -147,20 +151,20 @@
             } else {
                 // Remove "all" if it was previously selected
                 selectedUserTypes.delete('all');
-                
+
                 // Toggle the clicked filter
                 if (selectedUserTypes.has(userType)) {
                     selectedUserTypes.delete(userType);
                 } else {
                     selectedUserTypes.add(userType);
                 }
-                
+
                 // If no filters selected, revert to "all"
                 if (selectedUserTypes.size === 0) {
                     selectedUserTypes.add('all');
                 }
             }
-            
+
             updateButtonStyles();
             filterCalculators();
         }
@@ -195,9 +199,9 @@
                 activeFiltersSpan.textContent = '';
             } else {
                 const filterNames = Array.from(selectedUserTypes).map(type => {
-                    return type === 'free' ? 'Free' : 
-                           type === 'first_time' ? 'First Time' : 
-                           type === 'existing' ? 'Existing' : type;
+                    return type === 'free' ? 'Free' :
+                        type === 'first_time' ? 'First Time' :
+                            type === 'existing' ? 'Existing' : type;
                 });
                 activeFiltersSpan.textContent = `Showing: ${filterNames.join(' + ')}`;
             }
@@ -217,12 +221,12 @@
                 const matchesSearch = name.includes(searchTerm);
                 const matchesStatus = statusFilter === 'all' || status === statusFilter;
                 const matchesAccess = accessFilter === 'all' || access === accessFilter;
-                
+
                 // Check if user type matches any of the selected filters
-                const matchesUserType = selectedUserTypes.has('all') || 
-                                       (userType === 'free' && selectedUserTypes.has('free')) ||
-                                       (userType === 'first_time' && selectedUserTypes.has('first_time')) ||
-                                       (userType === 'existing' && selectedUserTypes.has('existing'));
+                const matchesUserType = selectedUserTypes.has('all') ||
+                    (userType === 'free' && selectedUserTypes.has('free')) ||
+                    (userType === 'first_time' && selectedUserTypes.has('first_time')) ||
+                    (userType === 'existing' && selectedUserTypes.has('existing'));
 
                 card.style.display = matchesSearch && matchesStatus && matchesAccess && matchesUserType ? '' : 'none';
             });

@@ -9,19 +9,19 @@ use Illuminate\Support\Str;
 
 class EducationContentController extends Controller
 {
- public function index(Request $request)
-{
-    $type = $request->type; 
+    public function index(Request $request)
+    {
+        $type = $request->type;
 
-    $contents = EducationContent::with('module')
-        ->when($type, function ($q) use ($type) {
-            $q->where('type', $type); 
-        })
-        ->orderBy('order')
-        ->paginate(10);
+        $contents = EducationContent::with('module')
+            ->when($type, function ($q) use ($type) {
+                $q->where('type', $type);
+            })
+            ->orderBy('order')
+            ->paginate(10);
 
-    return view('educationContents.index', compact('contents'));
-}
+        return view('educationContents.index', compact('contents'));
+    }
 
     public function show($id)
     {
