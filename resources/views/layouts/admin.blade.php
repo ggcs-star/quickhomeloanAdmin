@@ -81,6 +81,8 @@
                         ['Documents', 'documents', 'file-text'],
                         ['Tasks', 'tasks', 'check-square'],
                         ['Campaigns', 'campaigns', 'megaphone'],
+                        ['Community', 'community.index', 'users'],
+                        ['Podcasts', 'podcasts.index', 'mic'],
                         ['Interest Rates', 'rates.index', 'percent'],
                         ['Analytics', 'analytics', 'bar-chart-2'],
                         ['Settings', 'settings', 'settings'],

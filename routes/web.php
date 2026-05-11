@@ -20,6 +20,8 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CalculatorMediaController;
+use App\Http\Controllers\CommunityController;
+use App\Http\Controllers\PodcastController;
 /*
 |--------------------------------------------------------------------------
 | AUTH ROUTES
@@ -58,9 +60,24 @@ Route::middleware(['auth'])->group(function () {
         ->name('projects');
 
     /* LENDERS */
+    Route::prefix('community')->name('community.')->group(function () {
+        Route::get('/', [CommunityController::class, 'index'])->name('index');
+        Route::post('/post', [CommunityController::class, 'storePost'])->name('post.store');
+        Route::delete('/post/{id}', [CommunityController::class, 'destroy'])->name('post.destroy');
+        Route::post('/comment', [CommunityController::class, 'storeComment'])->name('comment.store');
+        Route::delete('/comment/{id}', [CommunityController::class, 'destroyComment'])->name('comment.destroy');
+    });
 
+    Route::prefix('podcasts')->group(function () {
+        Route::get('/', [PodcastController::class, 'index'])->name('podcasts.index');
+        Route::get('/create', [PodcastController::class, 'create'])->name('podcasts.create');
+        Route::post('/store', [PodcastController::class, 'store'])->name('podcasts.store');
+        Route::get('/edit/{id}', [PodcastController::class, 'edit'])->name('podcasts.edit');
+        Route::post('/update/{id}', [PodcastController::class, 'update'])->name('podcasts.update');
+        Route::delete('/delete/{id}', [PodcastController::class, 'destroy'])->name('podcasts.destroy');
+        Route::get('/show/{id}', [PodcastController::class, 'show'])->name('podcasts.show');
+    });
 
-    /* PARTNERS (DSA) */
     Route::get('/partners', [DsaPartnerController::class, 'index'])
         ->name('partners.index');
 
