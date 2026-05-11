@@ -41,4 +41,13 @@ class User extends Authenticatable
         'role'   => 'user',
         'status' => 'active',
     ];
+    public function communityPosts()
+    {
+        return $this->hasMany(CommunityPost::class, 'user_id');
+    }
+
+    public function communityComments()
+    {
+        return $this->hasMany(CommunityComment::class, 'user_id');
+    }
 }
