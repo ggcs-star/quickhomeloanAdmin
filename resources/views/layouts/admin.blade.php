@@ -83,6 +83,8 @@
                         ['Campaigns', 'campaigns', 'megaphone'],
                         ['Community', 'community.index', 'users'],
                         ['Podcasts', 'podcasts.index', 'mic'],
+                        ['Push Notification', 'notifications.create', 'bell'],
+                        ['Notification History', 'notifications.history', 'clock'],
                         ['Interest Rates', 'rates.index', 'percent'],
                         ['Analytics', 'analytics', 'bar-chart-2'],
                         ['Settings', 'settings', 'settings'],
