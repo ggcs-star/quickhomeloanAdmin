@@ -75,29 +75,25 @@ class NotificationController extends Controller
 
     public function history()
     {
-        // Direct database query (or API call)
-        $histories = NotificationHistory::orderBy('sent_at', 'desc')->limit(100)->get();
+
+        $apiUrl = rtrim(env('BACKEND_API_URL', 'https://backend.quickhomeloan.in'), '/') . '/api/fcm/history';
         
-        // Format for display
-        foreach ($histories as $history) {
-            $history->send_to_label = $this->getSendToLabel($history);
+        try {
+            $response = Http::timeout(30)->get($apiUrl);
+            
+            if ($response->successful()) {
+                $data = $response->json();
+                $histories = $data['data'] ?? [];
+            } else {
+                $histories = [];
+            }
+        } catch (\Exception $e) {
+            Log::error('History fetch error: ' . $e->getMessage());
+            $histories = [];
         }
-        
+
         return view('notifications.history', compact('histories'));
     }
     
-    private function getSendToLabel($history)
-    {
-        if ($history->send_to === 'all') {
-            return '📱 All Users';
-        } elseif ($history->send_to === 'specific' && !empty($history->user_names)) {
-            $names = array_slice($history->user_names, 0, 2);
-            $label = '👥 ' . implode(', ', $names);
-            if (count($history->user_names) > 2) {
-                $label .= ' +' . (count($history->user_names) - 2) . ' more';
-            }
-            return $label;
-        }
-        return '👥 ' . ($history->total_receivers ?? 0) . ' users';
-    }
+
 }
