@@ -22,6 +22,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CalculatorMediaController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\PodcastController;
+use App\Http\Controllers\NotificationController;
 /*
 |--------------------------------------------------------------------------
 | AUTH ROUTES
@@ -232,6 +233,11 @@ Route::prefix('calculator-media')->group(function () {
     Route::put('/update/{id}', [CalculatorMediaController::class, 'update'])->name('calculator-media.update');
     Route::delete('/delete/{id}', [CalculatorMediaController::class, 'destroy'])->name('calculator-media.delete');
 });
+  Route::prefix('notifications')->group(function () {
+    Route::get('/create', [NotificationController::class, 'create'])->name('notifications.create');
+    Route::post('/send', [NotificationController::class, 'send'])->name('notifications.send');
+    Route::get('/history', [NotificationController::class, 'history'])->name('notifications.history');
+  });
 /*
 |--------------------------------------------------------------------------
 | FALLBACK
@@ -239,4 +245,5 @@ Route::prefix('calculator-media')->group(function () {
 */
 Route::fallback(function () {
     return redirect()->route('login');
+    
 });
