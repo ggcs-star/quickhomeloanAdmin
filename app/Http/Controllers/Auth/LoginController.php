@@ -26,31 +26,23 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        // MongoDB + Laravel FIX (explicit web guard)
-        if (Auth::guard('web')->attempt([
-            'email'    => $request->email,
-            'password' => $request->password,
-        ])) {
+if (Auth::guard('web')->attempt([
+    'email' => $request->email,
+    'password' => $request->password,
+])) {
 
-            $user = Auth::guard('web')->user();
+    $user = Auth::guard('web')->user();
 
-            // ❌ block inactive users
-            if ($user->status !== 'active') {
-                Auth::guard('web')->logout();
-                return back()->withErrors([
-                    'email' => 'Account inactive'
-                ]);
-            }
+    if ($user->status !== 'active') {
+        Auth::guard('web')->logout();
 
-            // ✅ ADMIN → DASHBOARD
-            if ($user->role === 'admin') {
-                return redirect()->route('dashboard');
-            }
+        return back()->withErrors([
+            'email' => 'Account inactive'
+        ]);
+    }
 
-            // ✅ NORMAL USER (future use)
-            return redirect('/login');
-        }
-
+    return redirect()->route('dashboard');
+}
         return back()->withErrors([
             'email' => 'Invalid credentials'
         ]);
