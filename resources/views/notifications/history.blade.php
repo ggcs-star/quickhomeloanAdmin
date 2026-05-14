@@ -134,7 +134,7 @@
         
         @if(count($histories) > 0)
         <div class="px-6 py-4 border-t border-gray-100 bg-gray-50">
-            <p class="text-xs text-gray-500">Showing last {{ $histories->count() }} notifications</p>
+            <p class="text-xs text-gray-500">Showing last {{ count($histories) }} notifications</p>
         </div>
         @endif
     </div>

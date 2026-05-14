@@ -48,7 +48,7 @@ class NotificationController extends Controller
         $apiUrl = rtrim(env('BACKEND_API_URL'), '/') . '/api/fcm/notify-all';
         
         try {
-            $response = Http::timeout(60)->post($apiUrl, [
+           $response = Http::timeout(60)->post($apiUrl, [
                 'title' => $request->title,
                 'body' => $request->body,
                 'image_url' => $imageUrl,
@@ -56,6 +56,7 @@ class NotificationController extends Controller
                 'user_ids' => $userIds,
                 'user_names' => $userNames,
             ]);
+               
 
             if ($response->successful()) {
                 $result = $response->json();
