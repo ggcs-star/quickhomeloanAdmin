@@ -85,6 +85,7 @@
                         ['Podcasts', 'podcasts.index', 'mic'],
                         ['Push Notification', 'notifications.create', 'bell'],
                         ['Notification History', 'notifications.history', 'clock'],
+                        ['App Settings', 'app-settings.index', 'settings'],
                         ['Interest Rates', 'rates.index', 'percent'],
                         ['Analytics', 'analytics', 'bar-chart-2'],
                         ['Settings', 'settings', 'settings'],
