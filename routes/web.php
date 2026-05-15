@@ -23,6 +23,7 @@ use App\Http\Controllers\CalculatorMediaController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\PodcastController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\AppSettingController;          
 /*
 |--------------------------------------------------------------------------
 | AUTH ROUTES
@@ -247,6 +248,13 @@ Route::prefix('calculator-media')->group(function () {
             ->name('notifications.history');
     });
 
+});
+Route::prefix('app-settings')->group(function () {
+    Route::get('/', [AppSettingController::class, 'index'])->name('app-settings.index');
+    Route::get('/create', [AppSettingController::class, 'create'])->name('app-settings.create');
+    Route::post('/store', [AppSettingController::class, 'store'])->name('app-settings.store');
+    Route::get('/{id}/edit', [AppSettingController::class, 'edit'])->name('app-settings.edit');
+    Route::put('/{id}', [AppSettingController::class, 'update'])->name('app-settings.update');
 });
 /*
 |--------------------------------------------------------------------------
